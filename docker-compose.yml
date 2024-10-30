@@ -1,0 +1,32 @@
+services:
+  demo-server:
+    container_name: demo-server
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - demo-db
+    env_file:
+      - .env
+
+  demo-db:
+    image: mysql
+    container_name: demo-db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=demo_db
+      - MYSQL_USER=demo_user
+      - MYSQL_PASSWORD=demo_password
+    ports:
+      - 3306:3306
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
